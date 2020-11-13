@@ -28,7 +28,7 @@ class SocialiteService
 
         // 未注册先进行注册
         if (!$oauthUser) {
-            UserOauth::registerBySocialite($platform, $userId, $user);
+            $oauthUser = UserOauth::registerBySocialite($platform, $userId, $user);
         }
 
         return $oauthUser;

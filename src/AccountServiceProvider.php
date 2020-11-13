@@ -27,7 +27,6 @@ class AccountServiceProvider extends ServiceProvider
             event($account);
         });
 
-
         Route::group(config('account.route', []), function () {
             $this->loadRoutesFrom(\dirname(__DIR__) . '/routers/account.php');
         });

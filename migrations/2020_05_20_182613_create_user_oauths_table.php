@@ -24,7 +24,7 @@ class CreateUserOauthsTable extends Migration
             $table->string('refresh_token')->nullable();
             $table->timestamp('expired_at')->nullable();
             $table->unsignedTinyInteger('status')->index()->comment('授权状态');
-            $table->string('name')->comment('用户名');
+            $table->string('name')->nullable()->comment('用户名');
             $table->string('avatar')->nullable()->comment('头像');
             $table->timestamps();
         });

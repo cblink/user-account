@@ -57,10 +57,10 @@ trait UserOauthTrait
         $oauthUser = UserOauth::query()->create([
             'platform' => $platform,
             'platform_id' => $userId,
-            'access_token' => $user->token,
-            'refresh_token' => $user->refreshToken,
-            'expired_at' => Carbon::createFromTimestamp(time() + $user->expiresIn),
-            'status' => UserOauth::STATUS_NORMAL,
+            'access_token' => $user->token ?? '',
+            'refresh_token' => $user->refreshToken ?? '',
+            'expired_at' => Carbon::createFromTimestamp(time() + ($user->expiresIn ?? 0)),
+            'status' => UserOauth::STATUS_BIND,
             'name' => $user->getName(),
             'avatar' => $user->getAvatar(),
         ]);

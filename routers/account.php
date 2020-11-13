@@ -16,6 +16,11 @@ Route::prefix('socialite')->group(function () {
     Route::get('{platform}/user', [Api\SocialiteController::class, 'user'])->name('socialite.user');
 });
 
+# 小程序登陆
+Route::prefix('wechat-mini')->group(function(){
+    Route::get('login', [Api\MiniController::class, 'login'])->name('wechat.mini.login');
+});
+
 # 验证码
 Route::prefix('captcha')->group(function () {
     Route::post('mail/send', [Api\CaptchaController::class, 'sendMail'])->middleware('throttle:10,1');

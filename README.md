@@ -1,28 +1,15 @@
-<h1 align="center"> user-account </h1>
-
-<p align="center"> .</p>
+<h1 align="center"> 社会化登陆/用户登录组件 </h1>
 
 
-## Installing
+## 安装
 
 ```shell
 $ composer require cblink/user-account -vvv
 ```
 
-## Usage
+## 配置
+
+
+## 使用
 
 TODO
-
-## Contributing
-
-You can contribute in one of three ways:
-
-1. File bug reports using the [issue tracker](https://github.com/cblink/user-account/issues).
-2. Answer questions or fix bugs on the [issue tracker](https://github.com/cblink/user-account/issues).
-3. Contribute new features or update the wiki.
-
-_The code contribution process is not very formal. You just need to make sure that you follow the PSR-0, PSR-1, and PSR-2 coding guidelines. Any new code contributions must be accompanied by unit tests where applicable._
-
-## License
-
-MIT

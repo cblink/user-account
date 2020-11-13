@@ -9,8 +9,10 @@
         }
     ],
     "require": {
+        "ext-json": "*",
         "overtrue/easy-sms": "^1.1",
-        "cblink/laravel-dto": "^0.3.0"
+        "cblink/laravel-dto": "^0.3.0",
+        "laravel/socialite": "^5.1"
     },
     "autoload": {
         "psr-4": {
