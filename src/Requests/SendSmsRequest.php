@@ -29,7 +29,7 @@ class SendSmsRequest extends FormRequest
         return [
             'mobile' => ['required'],
             'country_number' => ['nullable'],
-            'platform' => ['required', Rule::in(AccountConst::EVENTS)]
+            'scene' => ['required', Rule::in(AccountConst::SCENE)]
         ];
     }
 }

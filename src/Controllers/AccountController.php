@@ -3,6 +3,7 @@
 namespace Cblink\UserAccount\Controllers;
 
 use Cblink\UserAccount\Account;
+use Cblink\UserAccount\AccountConst;
 use Illuminate\Http\Request;
 use Cblink\UserAccount\DTO\LoginDTO;
 use Cblink\UserAccount\DTO\ResetPasswordDTO;
@@ -46,6 +47,6 @@ class AccountController extends BaseController
 
         $account = $this->service->resetPassword($dto);
 
-        return $this->callbackEvent([$account], Account::RESET);
+        return $this->callbackEvent([$account], AccountConst::RESET);
     }
 }

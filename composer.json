@@ -10,13 +10,24 @@
     ],
     "require": {
         "ext-json": "*",
-        "overtrue/easy-sms": "^1.1",
-        "cblink/laravel-dto": "^0.3.0",
+        "ext-openssl": "*",
+        "cblink/laravel-dto": "^1.0.0|^0.3.0",
         "laravel/socialite": "^5.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0|^8.5",
+        "mockery/mockery": "^0.9|^1.3",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "orchestra/testbench": "^5.5"
     },
     "autoload": {
         "psr-4": {
             "Cblink\\UserAccount\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
         }
     },
     "extra": {

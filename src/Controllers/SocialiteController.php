@@ -2,8 +2,7 @@
 
 namespace Cblink\UserAccount\Controllers;
 
-use Cblink\UserAccount\Account;
-use Illuminate\Routing\Controller;
+use Cblink\UserAccount\AccountConst;
 use Laravel\Socialite\Facades\Socialite;
 use Cblink\UserAccount\Services\SocialiteService;
 
@@ -11,7 +10,7 @@ use Cblink\UserAccount\Services\SocialiteService;
  * Class SocialiteController
  * @package App\Http\Controllers\Common
  */
-class SocialiteController extends Controller
+class SocialiteController extends BaseController
 {
     /**
      * @param $platform
@@ -23,7 +22,7 @@ class SocialiteController extends Controller
 
         $params = ['url' => $redirectUrl];
 
-        return call_user_func_array(app(Account::class)->response, [$params]);
+        return $this->callbackEvent([$params]);
     }
 
     /**
@@ -45,6 +44,6 @@ class SocialiteController extends Controller
         $oauthUser = $service->getOAuthUser($platform);
 
         // 已注册了返回绑定的user_id
-        return call_user_func(app(Account::class)->socialite, $oauthUser);
+        return $this->callbackEvent([$oauthUser], AccountConst::SOCIALITE);
     }
 }

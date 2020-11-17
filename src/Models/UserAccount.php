@@ -54,6 +54,18 @@ class UserAccount extends Model
         self::TYPE_EMAIL => '邮箱',
     ];
 
+
+    /**
+     * 状态
+     */
+    const STATUS_NORMAL = 1;
+    const STATUS_DISABLE = 10;
+
+    const STATUS = [
+        self::STATUS_NORMAL => '正常',
+        self::STATUS_DISABLE => '禁用',
+    ];
+
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = empty($password) ? null : Hash::make($password);

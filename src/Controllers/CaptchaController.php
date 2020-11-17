@@ -2,9 +2,7 @@
 
 namespace Cblink\UserAccount\Controllers;
 
-use Cblink\UserAccount\Account;
 use Cblink\UserAccount\Captcha;
-use Illuminate\Routing\Controller;
 use Cblink\UserAccount\Events\SendSms;
 use Cblink\UserAccount\Events\SendMail;
 use Cblink\UserAccount\Requests\SendSmsRequest;

@@ -22,21 +22,6 @@ use InvalidArgumentException;
  */
 class Account
 {
-    const REGISTER = 'register';
-    const LOGIN = 'login';
-    const RESET = 'reset';
-    const SOCIALITE = 'socialite';
-
-    const RESPONSE = 'response';
-
-    const EVENTS = [
-        self::REGISTER,
-        self::LOGIN,
-        self::RESET,
-        self::SOCIALITE,
-        self::RESPONSE,
-    ];
-
     /**
      * @var array
      */
@@ -49,14 +34,14 @@ class Account
 
     public function defaultResponse()
     {
-        $this->events[self::RESPONSE] = function ($data) {
+        $this->events[AccountConst::RESPONSE] = function ($data) {
             return $data;
         };
     }
 
     public function __call($name, $arguments)
     {
-        if (!in_array($name, self::EVENTS)) {
+        if (!in_array($name, AccountConst::EVENTS)) {
             throw new InvalidArgumentException(sprintf('method %s not defined', $name));
         }
 
@@ -71,6 +56,6 @@ class Account
             return $this->events[$name];
         }
 
-        return $this->events[self::RESPONSE];
+        return $this->events[AccountConst::RESPONSE];
     }
 }

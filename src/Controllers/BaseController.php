@@ -3,6 +3,7 @@
 namespace Cblink\UserAccount\Controllers;
 
 use Cblink\UserAccount\Account;
+use Cblink\UserAccount\AccountConst;
 use Illuminate\Routing\Controller;
 
 /**
@@ -18,10 +19,14 @@ class BaseController extends Controller
      * @param string $name
      * @return mixed
      */
-    public function callbackEvent(array $params = [], $name = Account::RESPONSE)
+    public function callbackEvent(array $params = [], $name = AccountConst::RESPONSE)
     {
-        $closure = app(Account::class)->{$name};
+        $account = app(Account::class);
 
-        return call_user_func_array($closure, $params);
+        if (!property_exists($account, $name)) {
+            // @todo 异常处理
+        }
+
+        return call_user_func_array($account->{$name}, $params);
     }
 }

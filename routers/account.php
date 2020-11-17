@@ -18,11 +18,11 @@ Route::prefix('socialite')->group(function () {
 
 # 小程序登陆
 Route::prefix('wechat-mini')->group(function(){
-    Route::get('login', [Api\MiniController::class, 'login'])->name('wechat.mini.login');
+    Route::post('login', [Api\MiniController::class, 'login'])->name('wechat.mini.login');
 });
 
 # 验证码
 Route::prefix('captcha')->group(function () {
-    Route::post('mail/send', [Api\CaptchaController::class, 'sendMail'])->middleware('throttle:10,1');
-    Route::post('sms/send', [Api\CaptchaController::class, 'sendSms'])->middleware('throttle:3,1');
+    Route::post('mail/send', [Api\CaptchaController::class, 'sendMail'])->name('send.mail')->middleware('throttle:10,1');
+    Route::post('sms/send', [Api\CaptchaController::class, 'sendSms'])->name('send.sms')->middleware('throttle:3,1');
 });

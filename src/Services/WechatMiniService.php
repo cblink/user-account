@@ -2,6 +2,7 @@
 
 namespace Cblink\UserAccount\Services;
 
+use Cblink\UserAccount\DTO\WechatMiniLoginDTO;
 use Cblink\UserAccount\Models\UserOauth;
 use Cblink\UserAccount\Socialite\WechatMiniUser;
 use GuzzleHttp\Client;
@@ -24,33 +25,65 @@ class WechatMiniService
         $this->httpClient = $client;
     }
 
-    public function login($code)
+    /**
+     * @param WechatMiniLoginDTO $dto
+     * @return UserOauth|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Throwable
+     */
+    public function login(WechatMiniLoginDTO $dto)
     {
-        $user = $this->code2Session($code);
+        $data = $this->code2Session($dto->code);
 
         // 判断用户是否已经注册
-        $oauthUser = UserOauth::query()->where('platform_id', $user->getId())->first();
+        $oauthUser = UserOauth::query()
+            ->where('platform_id', $this->getUserId($data))
+            ->first();
 
         // 未注册先进行注册
         if (!$oauthUser) {
-            $oauthUser = UserOauth::registerBySocialite(self::WECHAT_MINI, $user->getId(), $user);
+            $oauthUser = UserOauth::registerBySocialite(
+                self::WECHAT_MINI,
+                $this->getUserId($data),
+                $this->getUserInfo($dto, $data)
+            );
         }
 
         return $oauthUser;
     }
 
     /**
-     * @param $user
+     * @param WechatMiniLoginDTO $dto
+     * @param $data
+     * @return WechatMiniUser
+     */
+    public function getUserInfo(WechatMiniLoginDTO $dto, $data)
+    {
+        if ($dto->iv && $dto->encryptedData) {
+            $data = json_decode(openssl_decrypt(
+                base64_decode($dto->encryptedData),
+                'AES-128-CBC',
+                base64_decode($data['session_key']),
+            OPENSSL_PKCS1_PADDING,
+                base64_decode($dto->iv)
+            ), true);
+        }
+
+        return new WechatMiniUser($data);
+    }
+
+    /**
+     * @param $data
      * @return array|\ArrayAccess|mixed
      */
-    public function getUserId($user)
+    public function getUserId($data)
     {
-        return Arr::get($user, 'openid');
+        return Arr::get($data, 'openid');
     }
 
     /**
      * @param $code
-     * @return WechatMiniUser
+     * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Throwable
      */
@@ -70,7 +103,7 @@ class WechatMiniService
 
         $this->throwException($data);
 
-        return new WechatMiniUser($data);
+        return $data;
     }
 
     /**

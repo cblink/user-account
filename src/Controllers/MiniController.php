@@ -3,8 +3,10 @@
 namespace Cblink\UserAccount\Controllers;
 
 use Cblink\UserAccount\Account;
-use Cblink\UserAccount\Requests\MiniLoginRequest;
+use Cblink\UserAccount\AccountConst;
+use Cblink\UserAccount\DTO\WechatMiniLoginDTO;
 use Cblink\UserAccount\Services\WechatMiniService;
+use Illuminate\Http\Request;
 
 /**
  * Class MiniController
@@ -12,11 +14,20 @@ use Cblink\UserAccount\Services\WechatMiniService;
  */
 class MiniController extends BaseController
 {
-    public function login(MiniLoginRequest $request, WechatMiniService $service)
+    /**
+     * @param Request $request
+     * @param WechatMiniService $service
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Throwable
+     */
+    public function login(Request $request, WechatMiniService $service)
     {
-        $oauthUser = $service->login($request->get('code'));
+        $dto = new WechatMiniLoginDTO($request->all());
+
+        $oauthUser = $service->login($dto);
 
         // 已注册了返回绑定的user_id
-        return call_user_func(app(Account::class)->socialite, $oauthUser);
+        return $this->callbackEvent([$oauthUser], AccountConst::SOCIALITE);
     }
 }

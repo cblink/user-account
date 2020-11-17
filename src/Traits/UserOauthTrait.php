@@ -3,6 +3,8 @@
 
 namespace Cblink\UserAccount\Traits;
 
+use Cblink\UserAccount\Models\UserOauthOriginal;
+use InvalidArgumentException;
 use Carbon\Carbon;
 use Laravel\Socialite\AbstractUser;
 use Illuminate\Database\Eloquent\Model;
@@ -26,22 +28,20 @@ trait UserOauthTrait
      *
      * @param $bindCode
      * @return static|null
+     * @throws \Throwable
      */
     public static function findByBindCode($bindCode)
     {
-        try {
-            list($id, $expiredTime) = unserialize(decrypt($bindCode));
-
-            // 过期了
-            if ($expiredTime < time()) {
-                throw new \InvalidArgumentException();
-            }
-
-        } catch (\Exception $exception) {
+        if (!$bindCode) {
             return null;
         }
 
-        return static::query()->findOrFail($id);
+        list($id, $expiredTime) = unserialize(decrypt($bindCode));
+
+        // 过期了
+        throw_if($expiredTime < time(), InvalidArgumentException::class);
+
+        return static::query()->find($id);
     }
 
     /**

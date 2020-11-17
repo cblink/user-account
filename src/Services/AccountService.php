@@ -3,6 +3,7 @@
 namespace Cblink\UserAccount\Services;
 
 use Cblink\UserAccount\Account;
+use Cblink\UserAccount\AccountConst;
 use Cblink\UserAccount\Captcha;
 use Cblink\UserAccount\AccountError;
 use Cblink\UserAccount\DTO\LoginDTO;
@@ -26,6 +27,7 @@ class AccountService
     /**
      * @param LoginDTO $dto
      * @return mixed
+     * @throws \Throwable
      */
     public function loginUser(LoginDTO $dto)
     {
@@ -80,7 +82,7 @@ class AccountService
     {
         $account = UserAccount::query()->where('account', $dto->account)->first();
 
-        return $account ? Account::LOGIN : Account::REGISTER;
+        return $account ? AccountConst::LOGIN : AccountConst::REGISTER;
     }
 
     /**
@@ -93,7 +95,7 @@ class AccountService
             ->where('account', $dto->account)
             ->first();
 
-        $this->verifyCaptcha(Account::RESET, $dto->account, $dto->captcha, $dto->captcha_key_id);
+        $this->verifyCaptcha(AccountConst::RESET, $dto->account, $dto->captcha, $dto->captcha_key_id);
 
         // 修改密码
         $userAccount->password = $dto->password;
