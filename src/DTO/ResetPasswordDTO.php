@@ -11,6 +11,7 @@ use Cblink\DTO\DTO;
  * @property-read string $password              密码
  * @property-read integer $captcha              验证码
  * @property-read integer $captcha_key_id       验证码标识
+ * @property-read string|null $platform         平台标识
  */
 class ResetPasswordDTO extends DTO
 {

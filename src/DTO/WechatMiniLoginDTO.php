@@ -7,9 +7,10 @@ use Cblink\DTO\DTO;
 /**
  * Class WechatMiniLoginDTO
  * @package Cblink\UserAccount\DTO
- * @property-read string $code              小程序code
- * @property-read string $encryptedData     userinfo中的encryptedData
- * @property-read string $iv                iv
+ * @property-read string $code                  小程序code
+ * @property-read string|null $encryptedData    userinfo中的encryptedData
+ * @property-read string|null $iv               iv
+ * @property-read string|null $platform         平台标识
  */
 class WechatMiniLoginDTO extends DTO
 {
