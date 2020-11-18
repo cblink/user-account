@@ -17,6 +17,7 @@ class WechatMiniLoginDTO extends DTO
     public function rules(): array
     {
         return [
+            'platform' => ['nullable', 'string'],
             'code' => ['required', 'string'],
             'encryptedData' => ['nullable', 'string'],
             'iv' => ['nullable', 'string'],

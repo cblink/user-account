@@ -31,9 +31,9 @@ class AccountController extends BaseController
     {
         $dto = new LoginDTO($request->all());
 
-        list($platform, $params) = $this->service->loginUser($dto);
+        list($scene, $params) = $this->service->loginUser($dto);
 
-        return $this->callbackEvent($params, $platform);
+        return $this->callbackEvent($params, $scene);
     }
 
     /**
@@ -47,6 +47,6 @@ class AccountController extends BaseController
 
         $account = $this->service->resetPassword($dto);
 
-        return $this->callbackEvent([$account], AccountConst::RESET);
+        return $this->callbackEvent([$account, $dto], AccountConst::RESET);
     }
 }

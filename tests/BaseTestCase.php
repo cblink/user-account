@@ -44,6 +44,8 @@ class BaseTestCase extends TestCase
             'prefix' => '',
         ]);
 
+        $app['config']->set('cache.default', 'array');
+
         $configPath = __DIR__ . DIRECTORY_SEPARATOR . 'config/';
 
         foreach (['services'] as $file) {

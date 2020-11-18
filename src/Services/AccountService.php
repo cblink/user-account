@@ -31,7 +31,7 @@ class AccountService
      */
     public function loginUser(LoginDTO $dto)
     {
-        $platform = $this->getPlatform($dto);
+        $platform = $this->getScene($dto);
 
         $this->verifyCaptcha($platform, $dto->account, $dto->captcha, $dto->captcha_key_id);
 
@@ -40,7 +40,7 @@ class AccountService
         // 查询第三方绑定信息
         $userOauth = UserOauth::findByBindCode($dto->bind_code);
 
-        return [$platform, [$account, $userOauth]];
+        return [$platform, [$account, $userOauth, $dto]];
     }
 
     /**
@@ -78,7 +78,7 @@ class AccountService
      * @param $dto
      * @return string
      */
-    public function getPlatform($dto)
+    public function getScene($dto)
     {
         $account = UserAccount::query()->where('account', $dto->account)->first();
 

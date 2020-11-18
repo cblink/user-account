@@ -29,7 +29,8 @@ class SendSmsRequest extends FormRequest
         return [
             'mobile' => ['required'],
             'country_number' => ['nullable'],
-            'scene' => ['required', Rule::in(AccountConst::SCENE)]
+            'scene' => ['required', Rule::in(AccountConst::SCENE)],
+            'platform' => ['nullable', 'string'],
         ];
     }
 }

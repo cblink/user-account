@@ -2,15 +2,9 @@
 
 namespace Tests\Feature;
 
-use Cblink\UserAccount\Account;
-use Cblink\UserAccount\AccountServiceProvider;
-use Cblink\UserAccount\DTO\WechatMiniLoginDTO;
-use Cblink\UserAccount\Events\UserActionEvent;
 use Cblink\UserAccount\Services\WechatMiniService;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use Tests\BaseTestCase;
-use Tests\Listeners\UserSocialiteLogin;
 
 /**
  * Class MiniLoginTest

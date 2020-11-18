@@ -17,7 +17,7 @@ class SendMail
     /**
      * @var string
      */
-    public $event;
+    public $scene;
 
     /**
      * @var string
@@ -29,11 +29,17 @@ class SendMail
      */
     public $keyId;
 
-    public function __construct($mail, $event, $randCode, $keyId)
+    /**
+     * @var mixed|null
+     */
+    public $platform;
+
+    public function __construct($mail, $scene, $randCode, $keyId, $platform = null)
     {
         $this->mail = $mail;
-        $this->event = $event;
+        $this->scene = $scene;
         $this->randCode = $randCode;
         $this->keyId = $keyId;
+        $this->platform = $platform;
     }
 }

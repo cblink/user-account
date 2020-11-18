@@ -23,13 +23,14 @@ class CaptchaController extends BaseController
      */
     public function sendMail(SendMailRequest $request, Captcha $captcha)
     {
-        list($keyId, $randCode) = $captcha->generate($request->input('platform'), $request->input('mail'));
+        list($keyId, $randCode) = $captcha->generate($request->input('scene'), $request->input('mail'));
 
         event(new SendMail(
             $request->get('mail'),
-            $request->get('platform'),
+            $request->get('scene'),
             $randCode,
-            $keyId
+            $keyId,
+            $request->get('platform')
         ));
 
         $params = ['key' => $keyId];
@@ -46,14 +47,15 @@ class CaptchaController extends BaseController
     {
         $account = $request->input('country_number') . $request->input('mobile');
 
-        list($keyId, $randCode) = $captcha->generate($request->input('platform'), $account);
+        list($keyId, $randCode) = $captcha->generate($request->input('scene'), $account);
 
         event(new SendSms(
             $request->input('mobile'),
             $request->input('country_number'),
-            $request->input('platform'),
+            $request->input('scene'),
             $randCode,
-            $keyId
+            $keyId,
+            $request->get('platform')
         ));
 
         $params = ['key' => $keyId];

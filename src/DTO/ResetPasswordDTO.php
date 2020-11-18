@@ -20,6 +20,8 @@ class ResetPasswordDTO extends DTO
             'account' => ['required'],
             'password' => ['required', 'string', 'min:6', 'max:32'],
 
+            'platform' => ['nullable', 'string'],
+
             'captcha' => ['required', 'integer'],
             'captcha_key_id' => ['required', 'string'],
         ];

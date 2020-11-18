@@ -15,19 +15,19 @@ class Captcha
     /**
      * 生成验证码
      *
-     * @param $platform
+     * @param $scene
      * @param $account
      * @param int $len
      * @param int $expiredTime
      * @return array
      */
-    public function generate($platform, $account, $len = 6, $expiredTime = 600)
+    public function generate($scene, $account, $len = 6, $expiredTime = 600)
     {
         $randCode = $this->getRandCode(config('account.captcha.num', $len));
 
         $keyId = md5(Uuid::uuid4()->toString());
 
-        Cache::put($this->getCacheKey($platform, $account, $keyId), $randCode, config('account.captcha.expired_time', $expiredTime));
+        Cache::put($this->getCacheKey($scene, $account, $keyId), $randCode, config('account.captcha.expired_time', $expiredTime));
 
         return [$keyId, (int) $randCode];
     }

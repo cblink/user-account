@@ -28,7 +28,8 @@ class SendMailRequest extends FormRequest
     {
         return [
             'mail' => ['required', 'email'],
-            'scene' => ['required', Rule::in(AccountConst::SCENE)]
+            'scene' => ['required', Rule::in(AccountConst::SCENE)],
+            'platform' => ['nullable', 'string'],
         ];
     }
 }

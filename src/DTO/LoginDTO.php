@@ -21,6 +21,8 @@ class LoginDTO extends DTO
             'account' => ['required'],
             'password' => ['nullable', 'string', 'min:6', 'max:32'],
 
+            'platform' => ['nullable', 'string'],
+
             'captcha' => ['required_without:password', 'integer'],
             'captcha_key_id' => ['required_with:rand_code'],
 
