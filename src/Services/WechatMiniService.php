@@ -62,16 +62,31 @@ class WechatMiniService
     public function getUserInfo(WechatMiniLoginDTO $dto, $data)
     {
         if ($dto->iv && $dto->encryptedData) {
-            $data = json_decode(openssl_decrypt(
-                base64_decode($dto->encryptedData),
-                'AES-128-CBC',
-                base64_decode($data['session_key']),
-            OPENSSL_PKCS1_PADDING,
-                base64_decode($dto->iv)
-            ), true);
+            $data = $this->decodeData(
+                $dto->encryptedData,
+                $dto->iv,
+                $data['session_key']
+            );
         }
 
         return new WechatMiniUser($data);
+    }
+
+    /**
+     * @param $data
+     * @param $iv
+     * @param $sessionKey
+     * @return mixed
+     */
+    public function decodeData($data, $iv, $sessionKey)
+    {
+        return json_decode(openssl_decrypt(
+            base64_decode($data),
+            'AES-128-CBC',
+            base64_decode($sessionKey),
+            OPENSSL_PKCS1_PADDING,
+            base64_decode($iv)
+        ), true);
     }
 
     /**
