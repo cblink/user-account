@@ -19,7 +19,7 @@ Route::prefix('socialite')->group(function () {
 # 小程序登陆
 Route::prefix('wechat-mini')->group(function(){
     Route::post('login', [Api\MiniController::class, 'login'])->name('wechat.mini.login');
-    Route::post('account/login', [Api\MiniController::class, 'accountLogin'])->name('wechat.mini.account.login');
+    Route::post('mobile/login', [Api\MiniController::class, 'mobileLogin'])->name('wechat.mini.mobile.login');
 });
 
 # 验证码
