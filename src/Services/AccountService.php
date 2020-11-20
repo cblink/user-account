@@ -31,7 +31,7 @@ class AccountService
      */
     public function loginUser(LoginDTO $dto)
     {
-        $platform = $this->getScene($dto);
+        $platform = $this->getScene($dto->account);
 
         $this->verifyCaptcha($platform, $dto->account, $dto->captcha, $dto->captcha_key_id);
 
@@ -75,12 +75,12 @@ class AccountService
     }
 
     /**
-     * @param $dto
+     * @param $account
      * @return string
      */
-    public function getScene($dto)
+    public function getScene($account)
     {
-        $account = UserAccount::query()->where('account', $dto->account)->first();
+        $account = UserAccount::query()->where('account', $account)->first();
 
         return $account ? AccountConst::LOGIN : AccountConst::REGISTER;
     }
