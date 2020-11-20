@@ -1,12 +1,11 @@
 <?php
 
-
 namespace Cblink\UserAccount\Services;
 
-use Carbon\Carbon;
+use Cblink\UserAccount\AccountError;
+use Cblink\UserAccount\AccountException;
 use Cblink\UserAccount\Models\UserOauth;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Socialite\AbstractUser;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialiteService
@@ -19,7 +18,12 @@ class SocialiteService
      */
     public function getOAuthUser($platform)
     {
-        $user = Socialite::driver($platform)->stateless()->user();
+        try {
+            $user = Socialite::driver($platform)->stateless()->user();
+
+        }catch (\Exception $exception) {
+            throw new AccountException(AccountError::ERR_CAPTCHA_VERIFY_FAIL);
+        }
 
         $userId = $this->getUserId($user);
 
