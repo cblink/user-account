@@ -47,6 +47,8 @@ class WechatMiniService
                 $this->getUserId($data),
                 $this->getUserInfo($dto, $data)
             );
+        } else {
+            $oauthUser->updateBySocialite($this->getUserInfo($dto, $data));
         }
 
         return $oauthUser;

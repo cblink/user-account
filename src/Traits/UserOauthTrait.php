@@ -1,9 +1,7 @@
 <?php
 
-
 namespace Cblink\UserAccount\Traits;
 
-use Cblink\UserAccount\Models\UserOauthOriginal;
 use InvalidArgumentException;
 use Carbon\Carbon;
 use Laravel\Socialite\AbstractUser;
@@ -41,7 +39,7 @@ trait UserOauthTrait
         // 过期了
         throw_if($expiredTime < time(), InvalidArgumentException::class);
 
-        return static::query()->find($id);
+        return static::query()->findOrfail($id);
     }
 
     /**
@@ -54,7 +52,7 @@ trait UserOauthTrait
      */
     public static function registerBySocialite($platform, $userId, AbstractUser $user)
     {
-        $oauthUser = UserOauth::query()->create([
+        return UserOauth::query()->create([
             'platform' => $platform,
             'platform_id' => $userId,
             'access_token' => $user->token ?? '',
@@ -64,11 +62,21 @@ trait UserOauthTrait
             'name' => $user->getName(),
             'avatar' => $user->getAvatar(),
         ]);
-
-        $oauthUser->original()->create([
-            'platform_original' => $user->getRaw()
-        ]);
-
-        return $oauthUser;
     }
+
+    /**
+     * 更新用户的信息
+     *
+     * @param AbstractUser $user
+     */
+    public function updateBySocialite(AbstractUser $user)
+    {
+        $this->update([
+            'access_token' => $user->token ?? '',
+            'refresh_token' => $user->refreshToken ?? '',
+            'expired_at' => Carbon::createFromTimestamp(time() + ($user->expiresIn ?? 0)),
+            'status' => UserOauth::STATUS_BIND,
+        ]);
+    }
+
 }

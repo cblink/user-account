@@ -51,14 +51,4 @@ class UserOauth extends Model
         self::STATUS_BIND => '已授权',
         self::STATUS_UNBIND => '取消授权',
     ];
-
-    /**
-     * 元数据
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function original()
-    {
-        return $this->hasOne(UserOauthOriginal::class, 'user_oauth_id', 'id');
-    }
 }

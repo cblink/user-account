@@ -20,6 +20,7 @@ class WechatMiniUser extends AbstractUser
             'name' => Arr::get($data, 'nickName'),
             'email' => null,
             'avatar' => Arr::get($data, 'avatarUrl'),
+            'token' => Arr::get($data, 'session_key'),
         ]);
     }
 }

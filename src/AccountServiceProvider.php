@@ -28,7 +28,14 @@ class AccountServiceProvider extends ServiceProvider
         });
 
         Route::group(config('account.route', []), function () {
-            $this->loadRoutesFrom(\dirname(__DIR__) . '/routers/account.php');
+
+            $routeFile = base_path('routes/account.php');
+
+            $loadFile = file_exists($routeFile) ?
+                $routeFile :
+                \dirname(__DIR__) . '/routers/account.php';
+
+            $this->loadRoutesFrom($loadFile);
         });
 
         $this->publishes([
