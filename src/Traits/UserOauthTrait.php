@@ -39,7 +39,7 @@ trait UserOauthTrait
         // 过期了
         throw_if($expiredTime < time(), InvalidArgumentException::class);
 
-        return static::query()->findOrfail($id);
+        return static::query()->find($id);
     }
 
     /**
