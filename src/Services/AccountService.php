@@ -44,12 +44,14 @@ class AccountService
     }
 
     /**
+     * 登陆或注册账号
      *
      * @param $account
      * @param $password
+     * @param bool $created
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object
      */
-    public function loginOrRegister($account, $password)
+    public function loginOrRegister($account, $password, bool $created = true)
     {
         $userAccount = UserAccount::query()->where('account', $account)->first();
 
@@ -59,7 +61,7 @@ class AccountService
         }
 
         // 如果账号不存在，则注册用户
-        if (!$userAccount) {
+        if (!$userAccount && $created) {
             $type = (bool) filter_var($account, FILTER_VALIDATE_EMAIL) ?
                 UserAccount::TYPE_EMAIL : UserAccount::TYPE_MOBILE;
 
