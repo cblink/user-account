@@ -68,6 +68,9 @@ class MiniController extends BaseController
             throw new AccountException(AccountError::ERR_MINI_MOBILE_ERROR);
         }
 
+        // 解密失败
+        throw_if(is_null($data), AccountException::class, AccountError::ERR_WECHAT_MINI_DECRYPT_FAIL);
+
         $account = $data['purePhoneNumber'];
 
         // 注册或登陆手机号
