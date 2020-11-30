@@ -11,7 +11,7 @@ use Laravel\Socialite\AbstractUser;
  */
 class WechatMiniUser extends AbstractUser
 {
-    public function __construct($data)
+    public function __construct($data, $sessionKey = null)
     {
         $this->setRaw($data);
         $this->map([
@@ -20,7 +20,7 @@ class WechatMiniUser extends AbstractUser
             'name' => Arr::get($data, 'nickName'),
             'email' => null,
             'avatar' => Arr::get($data, 'avatarUrl'),
-            'token' => Arr::get($data, 'session_key'),
+            'token' => $sessionKey,
         ]);
     }
 }

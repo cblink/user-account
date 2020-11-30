@@ -61,15 +61,17 @@ class WechatMiniService
      */
     public function getUserInfo(WechatMiniLoginDTO $dto, $data)
     {
+        $sessionKey = $data['session_key'];
+
         if ($dto->iv && $dto->encryptedData) {
             $data = $this->decodeData(
                 $dto->encryptedData,
                 $dto->iv,
-                $data['session_key']
+                $sessionKey
             );
         }
 
-        return new WechatMiniUser($data);
+        return new WechatMiniUser($data, $sessionKey);
     }
 
     /**
