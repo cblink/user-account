@@ -62,18 +62,25 @@ class AccountService
 
         // 如果账号不存在，则注册用户
         if (!$userAccount && $created) {
-            $type = (bool) filter_var($account, FILTER_VALIDATE_EMAIL) ?
-                UserAccount::TYPE_EMAIL : UserAccount::TYPE_MOBILE;
-
             $userAccount = UserAccount::query()
                 ->create([
                     'account' => $account,
-                    'type' => $type,
+                    'type' => $this->getType($account),
                     'password' => $password,
                 ]);
         }
 
         return $userAccount;
+    }
+
+    /**
+     * @param $account
+     * @return int
+     */
+    public function getType($account): int
+    {
+        return (bool) filter_var($account, FILTER_VALIDATE_EMAIL) ?
+            UserAccount::TYPE_EMAIL : UserAccount::TYPE_MOBILE;
     }
 
     /**
