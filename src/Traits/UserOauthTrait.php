@@ -59,7 +59,7 @@ trait UserOauthTrait
             'refresh_token' => $user->refreshToken ?? '',
             'expired_at' => Carbon::createFromTimestamp(time() + ($user->expiresIn ?? 0)),
             'status' => UserOauth::STATUS_BIND,
-            'name' => $user->getName(),
+            'name' => $user->getNickname(),
             'avatar' => $user->getAvatar(),
         ]);
     }
