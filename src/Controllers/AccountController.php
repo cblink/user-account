@@ -1,15 +1,23 @@
 <?php
 
+/*
+ * This file is part of the cblink/user-account.
+ *
+ * (c) Nick <me@xieying.vip>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Cblink\UserAccount\Controllers;
 
-use Cblink\UserAccount\Account;
 use Cblink\UserAccount\AccountConst;
-use Illuminate\Http\Request;
 use Cblink\UserAccount\DTO\LoginDTO;
 use Cblink\UserAccount\DTO\ResetPasswordDTO;
 use Cblink\UserAccount\Services\AccountService;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
-class AccountController extends BaseController
+class AccountController extends Controller
 {
 
     /**
@@ -33,7 +41,7 @@ class AccountController extends BaseController
 
         list($scene, $params) = $this->service->loginUser($dto);
 
-        return $this->callbackEvent($params, $scene);
+        return callbackEvent($params, $scene);
     }
 
     /**
@@ -43,10 +51,12 @@ class AccountController extends BaseController
      */
     public function resetPassword(Request $request)
     {
+        throw_disabled_feature(AccountConst::RESET);
+
         $dto = new ResetPasswordDTO($request->all());
 
         $account = $this->service->resetPassword($dto);
 
-        return $this->callbackEvent([$account, $dto], AccountConst::RESET);
+        return callbackEvent([$account, $dto], AccountConst::RESET);
     }
 }

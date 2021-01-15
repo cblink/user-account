@@ -1,16 +1,24 @@
 <?php
 
+/*
+ * This file is part of the cblink/user-account.
+ *
+ * (c) Nick <me@xieying.vip>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Cblink\UserAccount\Services;
 
 use Cblink\UserAccount\Account;
 use Cblink\UserAccount\AccountConst;
-use Cblink\UserAccount\Captcha;
 use Cblink\UserAccount\AccountError;
-use Cblink\UserAccount\DTO\LoginDTO;
 use Cblink\UserAccount\AccountException;
-use Cblink\UserAccount\Models\UserOauth;
-use Cblink\UserAccount\Models\UserAccount;
+use Cblink\UserAccount\Captcha;
+use Cblink\UserAccount\DTO\LoginDTO;
 use Cblink\UserAccount\DTO\ResetPasswordDTO;
+use Cblink\UserAccount\Models\UserAccount;
+use Cblink\UserAccount\Models\UserOauth;
 
 class AccountService
 {
@@ -31,16 +39,18 @@ class AccountService
      */
     public function loginUser(LoginDTO $dto)
     {
-        $platform = $this->getScene($dto->account);
+        $scene = $this->getScene($dto->account);
 
-        $this->verifyCaptcha($platform, $dto->account, $dto->captcha, $dto->captcha_key_id);
+        throw_disabled_feature($scene);
+
+        $this->verifyCaptcha($scene, $dto->account, $dto->captcha, $dto->captcha_key_id);
 
         $account = $this->loginOrRegister($dto->account, $dto->password);
 
         // 查询第三方绑定信息
         $userOauth = UserOauth::findByBindCode($dto->bind_code);
 
-        return [$platform, [$account, $userOauth, $dto]];
+        return [$scene, [$account, $userOauth, $dto]];
     }
 
     /**
@@ -87,7 +97,7 @@ class AccountService
      * @param $account
      * @return string
      */
-    public function getScene($account)
+    public function getScene($account): string
     {
         $account = UserAccount::query()->where('account', $account)->first();
 

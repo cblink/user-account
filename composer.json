@@ -5,7 +5,7 @@
     "authors": [
         {
             "name": "Nick",
-            "email": "nick@httpd.cc"
+            "email": "me@xieying.vip"
         }
     ],
     "require": {
@@ -23,7 +23,10 @@
     "autoload": {
         "psr-4": {
             "Cblink\\UserAccount\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

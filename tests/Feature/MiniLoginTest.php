@@ -1,8 +1,17 @@
 <?php
 
+/*
+ * This file is part of the cblink/user-account.
+ *
+ * (c) Nick <me@xieying.vip>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Tests\Feature;
 
 use Cblink\UserAccount\Services\WechatMiniService;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use Tests\BaseTestCase;
 
@@ -12,7 +21,6 @@ use Tests\BaseTestCase;
  */
 class MiniLoginTest extends BaseTestCase
 {
-
     public function testCodeLogin()
     {
         $code = "0937Ghll2qXFY54lG7ol2rguxc07GhlA";
@@ -36,6 +44,4 @@ class MiniLoginTest extends BaseTestCase
             'type' => 'socialite'
         ]);
     }
-
-
 }

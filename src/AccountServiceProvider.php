@@ -1,10 +1,18 @@
 <?php
 
+/*
+ * This file is part of the cblink/user-account.
+ *
+ * (c) Nick <me@xieying.vip>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Cblink\UserAccount;
 
+use Cblink\UserAccount\Events\UserActionEvent;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Cblink\UserAccount\Events\UserActionEvent;
 
 class AccountServiceProvider extends ServiceProvider
 {
@@ -28,7 +36,6 @@ class AccountServiceProvider extends ServiceProvider
         });
 
         Route::group(config('account.route', []), function () {
-
             $routeFile = base_path('routes/account.php');
 
             $loadFile = file_exists($routeFile) ?

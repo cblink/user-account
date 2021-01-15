@@ -1,8 +1,15 @@
 <?php
 
+/*
+ * This file is part of the cblink/user-account.
+ *
+ * (c) Nick <me@xieying.vip>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Cblink\UserAccount\Controllers;
 
-use Cblink\UserAccount\Account;
 use Cblink\UserAccount\AccountConst;
 use Cblink\UserAccount\AccountError;
 use Cblink\UserAccount\AccountException;
@@ -12,12 +19,13 @@ use Cblink\UserAccount\Requests\GetMiniMobileRequest;
 use Cblink\UserAccount\Services\AccountService;
 use Cblink\UserAccount\Services\WechatMiniService;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 /**
  * Class MiniController
  * @package Cblink\UserAccount\Controllers
  */
-class MiniController extends BaseController
+class MiniController extends Controller
 {
     protected $service;
 
@@ -41,7 +49,7 @@ class MiniController extends BaseController
         $oauthUser = $this->service->login($dto);
 
         // 已注册了返回绑定的user_id
-        return $this->callbackEvent([$oauthUser], AccountConst::SOCIALITE);
+        return callbackEvent([$oauthUser], AccountConst::SOCIALITE);
     }
 
     /**
@@ -64,7 +72,7 @@ class MiniController extends BaseController
                 $request->get('iv'),
                 $oauthUser->access_token
             );
-        }catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             throw new AccountException(AccountError::ERR_MINI_MOBILE_ERROR);
         }
 
@@ -77,6 +85,6 @@ class MiniController extends BaseController
         $userAccount = $service->loginOrRegister($account, null);
 
         // 已注册了返回绑定的user_id
-        return $this->callbackEvent([$userAccount, $oauthUser], $service->getScene($account));
+        return callbackEvent([$userAccount, $oauthUser], $service->getScene($account));
     }
 }

@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of the cblink/user-account.
+ *
+ * (c) Nick <me@xieying.vip>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Cblink\UserAccount\Services;
 
 use Cblink\UserAccount\AccountError;
@@ -20,8 +28,7 @@ class SocialiteService
     {
         try {
             $user = Socialite::driver($platform)->stateless()->user();
-
-        }catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             throw new AccountException(AccountError::ERR_CAPTCHA_VERIFY_FAIL);
         }
 

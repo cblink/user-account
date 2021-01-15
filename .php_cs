@@ -2,7 +2,7 @@
 $header = <<<EOF
 This file is part of the cblink/user-account.
 
-(c) Nick <nick@httpd.cc>
+(c) Nick <me@xieying.vip>
 
 This source file is subject to the MIT license that is bundled.
 EOF;
@@ -10,7 +10,7 @@ EOF;
 return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules(array(
-        '@Psr-2' => true,
+        '@PSR2' => true,
         'header_comment' => array('header' => $header),
         'array_syntax' => array('syntax' => 'short'),
         'ordered_imports' => true,

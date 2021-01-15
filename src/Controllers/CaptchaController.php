@@ -1,18 +1,27 @@
 <?php
 
+/*
+ * This file is part of the cblink/user-account.
+ *
+ * (c) Nick <me@xieying.vip>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Cblink\UserAccount\Controllers;
 
 use Cblink\UserAccount\Captcha;
-use Cblink\UserAccount\Events\SendSms;
 use Cblink\UserAccount\Events\SendMail;
-use Cblink\UserAccount\Requests\SendSmsRequest;
+use Cblink\UserAccount\Events\SendSms;
 use Cblink\UserAccount\Requests\SendMailRequest;
+use Cblink\UserAccount\Requests\SendSmsRequest;
+use Illuminate\Routing\Controller;
 
 /**
  * Class CaptchaController
  * @package App\Http\Controllers\Common
  */
-class CaptchaController extends BaseController
+class CaptchaController extends Controller
 {
     /**
      * 发送邮件
@@ -20,6 +29,7 @@ class CaptchaController extends BaseController
      * @param SendMailRequest $request
      * @param Captcha $captcha
      * @return array
+     * @throws \Throwable
      */
     public function sendMail(SendMailRequest $request, Captcha $captcha)
     {
@@ -35,13 +45,14 @@ class CaptchaController extends BaseController
 
         $params = ['key' => $keyId];
 
-        return $this->callbackEvent([$params]);
+        return callbackEvent([$params]);
     }
 
     /**
      * @param SendSmsRequest $request
      * @param Captcha $captcha
      * @return \Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
+     * @throws \Throwable
      */
     public function sendSms(SendSmsRequest $request, Captcha $captcha)
     {
@@ -60,6 +71,6 @@ class CaptchaController extends BaseController
 
         $params = ['key' => $keyId];
 
-        return $this->callbackEvent([$params]);
+        return callbackEvent([$params]);
     }
 }

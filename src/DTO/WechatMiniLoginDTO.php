@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of the cblink/user-account.
+ *
+ * (c) Nick <me@xieying.vip>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Cblink\UserAccount\DTO;
 
 use Cblink\DTO\DTO;
@@ -14,7 +22,6 @@ use Cblink\DTO\DTO;
  */
 class WechatMiniLoginDTO extends DTO
 {
-
     public function rules(): array
     {
         return [

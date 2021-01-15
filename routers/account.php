@@ -1,7 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+/*
+ * This file is part of the cblink/user-account.
+ *
+ * (c) Nick <me@xieying.vip>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 use Cblink\UserAccount\Controllers as Api;
+use Illuminate\Support\Facades\Route;
 
 # 账号登陆
 Route::prefix('account')->group(function () {
@@ -17,7 +25,7 @@ Route::prefix('socialite')->group(function () {
 });
 
 # 小程序登陆
-Route::prefix('wechat-mini')->group(function(){
+Route::prefix('wechat-mini')->group(function () {
     Route::post('login', [Api\MiniController::class, 'login'])->name('wechat.mini.login');
     Route::post('mobile/login', [Api\MiniController::class, 'mobileLogin'])->name('wechat.mini.mobile.login');
 });

@@ -1,20 +1,30 @@
 <?php
 
+/*
+ * This file is part of the cblink/user-account.
+ *
+ * (c) Nick <me@xieying.vip>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Cblink\UserAccount\Controllers;
 
 use Cblink\UserAccount\AccountConst;
-use Laravel\Socialite\Facades\Socialite;
 use Cblink\UserAccount\Services\SocialiteService;
+use Illuminate\Routing\Controller;
+use Laravel\Socialite\Facades\Socialite;
 
 /**
  * Class SocialiteController
  * @package App\Http\Controllers\Common
  */
-class SocialiteController extends BaseController
+class SocialiteController extends Controller
 {
     /**
      * @param $platform
      * @return array
+     * @throws \Throwable
      */
     public function url($platform)
     {
@@ -22,7 +32,7 @@ class SocialiteController extends BaseController
 
         $params = ['url' => $redirectUrl];
 
-        return $this->callbackEvent([$params]);
+        return callbackEvent([$params]);
     }
 
     /**
@@ -38,12 +48,13 @@ class SocialiteController extends BaseController
      * @param $platform
      * @param SocialiteService $service
      * @return mixed
+     * @throws \Throwable
      */
     public function user($platform, SocialiteService $service)
     {
         $oauthUser = $service->getOAuthUser($platform);
 
         // 已注册了返回绑定的user_id
-        return $this->callbackEvent([$oauthUser], AccountConst::SOCIALITE);
+        return callbackEvent([$oauthUser], AccountConst::SOCIALITE);
     }
 }

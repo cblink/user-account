@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the cblink/user-account.
+ *
+ * (c) Nick <me@xieying.vip>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
 
 namespace Cblink\UserAccount\Traits;
 
@@ -33,5 +40,4 @@ trait UserAccountTrait
     {
         return Hash::check($password, $this->password);
     }
-
 }

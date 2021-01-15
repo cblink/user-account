@@ -1,12 +1,20 @@
 <?php
 
+/*
+ * This file is part of the cblink/user-account.
+ *
+ * (c) Nick <me@xieying.vip>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Cblink\UserAccount\Traits;
 
-use InvalidArgumentException;
 use Carbon\Carbon;
-use Laravel\Socialite\AbstractUser;
-use Illuminate\Database\Eloquent\Model;
 use Cblink\UserAccount\Models\UserOauth;
+use Illuminate\Database\Eloquent\Model;
+use InvalidArgumentException;
+use Laravel\Socialite\AbstractUser;
 
 trait UserOauthTrait
 {
@@ -78,5 +86,4 @@ trait UserOauthTrait
             'status' => UserOauth::STATUS_BIND,
         ]);
     }
-
 }

@@ -1,7 +1,16 @@
 <?php
 
+/*
+ * This file is part of the cblink/user-account.
+ *
+ * (c) Nick <me@xieying.vip>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Tests;
 
+use Cblink\UserAccount\Account;
 use Cblink\UserAccount\AccountServiceProvider;
 use Cblink\UserAccount\Events\UserActionEvent;
 use Illuminate\Support\Facades\Event;
@@ -49,12 +58,11 @@ class BaseTestCase extends TestCase
         $configPath = __DIR__ . DIRECTORY_SEPARATOR . 'config/';
 
         foreach (['services'] as $file) {
-
             $filePath = file_exists(sprintf('%sdev.%s.php', $configPath, $file)) ?
                 sprintf('%sdev.%s.php', $configPath, $file) :
                 sprintf('%s%s.php', $configPath, $file);
 
-            throw_unless(file_exists($filePath), \LogicException::class , sprintf('config %s not found', $file));
+            throw_unless(file_exists($filePath), \LogicException::class, sprintf('config %s not found', $file));
 
             $app['config']->set($file, require $filePath);
         }
@@ -66,6 +74,9 @@ class BaseTestCase extends TestCase
         parent::setUp();
         $this->loadMigrationsFrom(dirname(__DIR__) . '/migrations');
         $this->artisan('migrate')->run();
-    }
+        /** @var Account $account **/
+        $account = $this->app->make(Account::class);
 
+        $this->instance(Account::class, $account);
+    }
 }

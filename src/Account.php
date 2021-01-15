@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of the cblink/user-account.
+ *
+ * (c) Nick <me@xieying.vip>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Cblink\UserAccount;
 
 use Closure;
@@ -50,9 +58,18 @@ class Account
         $this->events[$name] = $closure;
     }
 
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        return array_key_exists($name, $this->events);
+    }
+
     public function __get($name)
     {
-        if (array_key_exists($name, $this->events)) {
+        if ($this->__isset($name)) {
             return $this->events[$name];
         }
 
