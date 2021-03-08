@@ -62,10 +62,6 @@ class AccountServiceProvider extends ServiceProvider
     public function published()
     {
         $this->publishes([
-            \dirname(__DIR__) . '/migrations/' => database_path('migrations'),
-        ], 'migrations');
-
-        $this->publishes([
             \dirname(__DIR__) . '/config/account.php' => config_path('account.php'),
         ], 'config');
     }
