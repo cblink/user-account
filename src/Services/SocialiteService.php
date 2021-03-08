@@ -22,7 +22,7 @@ class SocialiteService
      * 登陆用户
      *
      * @param $platform
-     * @return UserOauth|Model
+     * @return array
      */
     public function getOAuthUser($platform)
     {
@@ -42,7 +42,7 @@ class SocialiteService
             $oauthUser = UserOauth::registerBySocialite($platform, $userId, $user);
         }
 
-        return $oauthUser;
+        return [$oauthUser, $user];
     }
 
     /**

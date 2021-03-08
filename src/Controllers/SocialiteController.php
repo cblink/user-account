@@ -52,9 +52,9 @@ class SocialiteController extends Controller
      */
     public function user($platform, SocialiteService $service)
     {
-        $oauthUser = $service->getOAuthUser($platform);
+        [$oauthUser, $user] = $service->getOAuthUser($platform);
 
         // 已注册了返回绑定的user_id
-        return callbackEvent([$oauthUser], AccountConst::SOCIALITE);
+        return callbackEvent([$oauthUser, $user], AccountConst::SOCIALITE);
     }
 }
