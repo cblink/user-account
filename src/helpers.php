@@ -46,18 +46,3 @@ if (!function_exists('throw_disabled_feature')) {
         );
     }
 }
-
-if (!function_exists('throw_disabled_feature')) {
-    /**
-     * @param $feature
-     * @throws Throwable
-     */
-    function throw_disabled_feature($feature)
-    {
-        throw_if(
-            in_array($feature, config('account.disabled', [])),
-            AccountException::class,
-            AccountError::ERR_FEATURE_IS_DISABLED
-        );
-    }
-}

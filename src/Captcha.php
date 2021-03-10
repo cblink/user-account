@@ -28,7 +28,7 @@ class Captcha
      * @param int $expiredTime
      * @return array
      */
-    public function generate($scene, $account, $len = 6, $expiredTime = 600)
+    public function generate($scene, $account, $len = 6, $expiredTime = 600): array
     {
         $randCode = $this->getRandCode(config('account.captcha.num', $len));
 

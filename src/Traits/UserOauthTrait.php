@@ -13,6 +13,7 @@ namespace Cblink\UserAccount\Traits;
 use Carbon\Carbon;
 use Cblink\UserAccount\Models\UserOauth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use InvalidArgumentException;
 use Laravel\Socialite\AbstractUser;
 
@@ -61,6 +62,7 @@ trait UserOauthTrait
     public static function registerBySocialite($platform, $userId, AbstractUser $user)
     {
         return UserOauth::query()->create([
+            'app_id' => config(sprintf('services.%s.client_id', $platform), ''),
             'platform' => $platform,
             'platform_id' => $userId,
             'access_token' => $user->token ?? '',

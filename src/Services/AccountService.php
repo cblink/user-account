@@ -34,18 +34,22 @@ class AccountService
 
     /**
      * @param LoginDTO $dto
-     * @return mixed
+     * @return array
      * @throws \Throwable
      */
-    public function loginUser(LoginDTO $dto)
+    public function loginUser(LoginDTO $dto): array
     {
-        $scene = $this->getScene($dto->account);
+        // 查询账户信息
+        $account = UserAccount::query()->where('account', $dto->account)->first();
 
-        throw_disabled_feature($scene);
+        // 检测功能是否开启
+        throw_disabled_feature($scene = $account ? AccountConst::LOGIN : AccountConst::REGISTER);
 
+        // 验证验证码
         $this->verifyCaptcha($scene, $dto->account, $dto->captcha, $dto->captcha_key_id);
 
-        $account = $this->loginOrRegister($dto->account, $dto->password);
+        // 注册或获取用户
+        $account = $this->loginOrRegister($scene, $account, $dto->account, $dto->password);
 
         // 查询第三方绑定信息
         $userOauth = UserOauth::findByBindCode($dto->bind_code);
@@ -56,28 +60,26 @@ class AccountService
     /**
      * 登陆或注册账号
      *
+     * @param $scene
+     * @param $userAccount
      * @param $account
      * @param $password
-     * @param bool $created
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object
      */
-    public function loginOrRegister($account, $password, bool $created = true)
+    public function loginOrRegister($scene, $userAccount, $account, $password)
     {
-        $userAccount = UserAccount::query()->where('account', $account)->first();
-
-        // 如果账号存在，但是密码验证失败，则提示错误
-        if (!is_null($userAccount) && !empty($password) && !$userAccount->checkPassword($password)) {
-            throw new AccountException(AccountError::ERR_CAPTCHA_VERIFY_FAIL);
-        }
-
-        // 如果账号不存在，则注册用户
-        if (!$userAccount && $created) {
+        if ($scene == AccountConst::REGISTER && !$userAccount) {
             $userAccount = UserAccount::query()
                 ->create([
                     'account' => $account,
                     'type' => $this->getType($account),
                     'password' => $password,
                 ]);
+        } else {
+            // 如果账号存在，但是密码验证失败，则提示错误
+            if (!is_null($userAccount) && !empty($password) && !$userAccount->checkPassword($password)) {
+                throw new AccountException(AccountError::ERR_CAPTCHA_VERIFY_FAIL);
+            }
         }
 
         return $userAccount;
@@ -94,19 +96,9 @@ class AccountService
     }
 
     /**
-     * @param $account
-     * @return string
-     */
-    public function getScene($account): string
-    {
-        $account = UserAccount::query()->where('account', $account)->first();
-
-        return $account ? AccountConst::LOGIN : AccountConst::REGISTER;
-    }
-
-    /**
      * @param ResetPasswordDTO $dto
      * @return mixed
+     * @throws \Throwable
      */
     public function resetPassword(ResetPasswordDTO $dto)
     {
@@ -129,15 +121,16 @@ class AccountService
      * @param $account
      * @param $captcha
      * @param $captcha_key_id
+     * @throws \Throwable
      */
     public function verifyCaptcha($platform, $account, $captcha, $captcha_key_id)
     {
         // 如果有传入验证码，则进行验证
-        if ($captcha) {
-            // 验证验证码
-            if (!$this->captcha->verify(...func_get_args())) {
-                throw new AccountException(AccountError::ERR_CAPTCHA_VERIFY_FAIL);
-            }
-        }
+
+        throw_if(
+            $captcha && !$this->captcha->verify(...func_get_args()),
+            AccountException::class,
+            AccountError::ERR_CAPTCHA_VERIFY_FAIL
+        );
     }
 }
