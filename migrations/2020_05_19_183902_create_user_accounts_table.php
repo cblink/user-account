@@ -23,7 +23,11 @@ class CreateUserAccountsTable extends Migration
     {
         Schema::create('user_accounts', function (Blueprint $table) {
             $table->comment = "用户账号表";
-            $table->id();
+            if (method_exists($table, 'id')) {
+                $table->id();
+            } else {
+                $table->increments('id');
+            }
             $table->string('user_id')->index()->default('')->comment('绑定的user_id');
             $table->string('account', 80)->index()->comment('登陆的账号');
             $table->string('password')->nullable()->comment('密码');

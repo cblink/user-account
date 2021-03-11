@@ -23,7 +23,11 @@ class CreateUserOauthsTable extends Migration
     {
         Schema::create('user_oauths', function (Blueprint $table) {
             $table->comment = "第三方应用认证表";
-            $table->id();
+            if (method_exists($table, 'id')) {
+                $table->id();
+            } else {
+                $table->increments('id');
+            }
             // $table->unsignedBigInteger('user_id')->index()->comment('用户id');
             $table->string('user_id')->index()->default('')->comment('绑定的user_id');
             $table->string('platform', 20)->index()->comment('应用类型');
