@@ -42,14 +42,11 @@ class AccountService
         // 查询账户信息
         $account = UserAccount::query()->where('account', $dto->account)->first();
 
-        // 检测功能是否开启
-        throw_disabled_feature($scene = $account ? AccountConst::LOGIN : AccountConst::REGISTER);
-
         // 验证验证码
-        $this->verifyCaptcha($scene, $dto->account, $dto->captcha, $dto->captcha_key_id);
+        $this->verifyCaptcha($this->getScene($account), $dto->account, $dto->captcha, $dto->captcha_key_id);
 
         // 注册或获取用户
-        $account = $this->loginOrRegister($scene, $account, $dto->account, $dto->password);
+        [$account, $scene] = $this->loginOrRegister($dto->account, $dto->password);
 
         // 查询第三方绑定信息
         $userOauth = UserOauth::findByBindCode($dto->bind_code);
@@ -58,16 +55,27 @@ class AccountService
     }
 
     /**
+     * @param $account
+     * @return string
+     */
+    public function getScene($account): string
+    {
+        return $account ? AccountConst::LOGIN : AccountConst::REGISTER;
+    }
+
+    /**
      * 登陆或注册账号
      *
-     * @param $scene
-     * @param $userAccount
      * @param $account
      * @param $password
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object
+     * @return array
      */
-    public function loginOrRegister($scene, $userAccount, $account, $password)
+    public function loginOrRegister($account, $password = ''): array
     {
+        $userAccount = UserAccount::findByMobile($account);
+
+        $scene = $this->getScene($account);
+
         if ($scene == AccountConst::REGISTER && !$userAccount) {
             $userAccount = UserAccount::query()
                 ->create([
@@ -82,7 +90,7 @@ class AccountService
             }
         }
 
-        return $userAccount;
+        return [$userAccount, $scene];
     }
 
     /**

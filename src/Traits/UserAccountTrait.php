@@ -21,6 +21,18 @@ trait UserAccountTrait
 {
 
     /**
+     * @param $mobile
+     * @return UserAccount|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     */
+    public static function findByMobile($mobile)
+    {
+        return UserAccount::query()->where([
+            'account' => $mobile,
+            'type' => UserAccount::TYPE_MOBILE
+        ])->first();
+    }
+
+    /**
      * @param $account
      * @return int
      */

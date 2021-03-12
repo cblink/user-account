@@ -10,7 +10,11 @@
 
 namespace Cblink\UserAccount\Services;
 
+use Cblink\UserAccount\AccountConst;
+use Cblink\UserAccount\AccountError;
+use Cblink\UserAccount\AccountException;
 use Cblink\UserAccount\DTO\WechatMiniLoginDTO;
+use Cblink\UserAccount\Models\UserAccount;
 use Cblink\UserAccount\Models\UserOauth;
 use Cblink\UserAccount\Socialite\WechatMiniUser;
 use GuzzleHttp\Client;
@@ -80,6 +84,27 @@ class WechatMiniService
         }
 
         return new WechatMiniUser($data, $sessionKey);
+    }
+
+    /**
+     * @param $encryptedData
+     * @param $iv
+     * @param $sessionKey
+     * @return mixed
+     * @throws \Throwable
+     */
+    public function getMobileInfo($encryptedData, $iv, $sessionKey)
+    {
+        try {
+            $data = $this->decodeData($encryptedData, $iv, $sessionKey);
+        } catch (\Exception $exception) {
+            throw new AccountException(AccountError::ERR_MINI_MOBILE_ERROR);
+        }
+
+        // 解密失败
+        throw_if(is_null($data), AccountException::class, AccountError::ERR_WECHAT_MINI_DECRYPT_FAIL);
+
+        return $data;
     }
 
     /**

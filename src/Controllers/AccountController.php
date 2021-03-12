@@ -51,8 +51,6 @@ class AccountController extends Controller
      */
     public function resetPassword(Request $request)
     {
-        throw_disabled_feature(AccountConst::RESET);
-
         $dto = new ResetPasswordDTO($request->all());
 
         $account = $this->service->resetPassword($dto);

@@ -14,6 +14,7 @@ use Cblink\UserAccount\AccountConst;
 use Cblink\UserAccount\AccountError;
 use Cblink\UserAccount\AccountException;
 use Cblink\UserAccount\DTO\WechatMiniLoginDTO;
+use Cblink\UserAccount\Models\UserAccount;
 use Cblink\UserAccount\Models\UserOauth;
 use Cblink\UserAccount\Requests\GetMiniMobileRequest;
 use Cblink\UserAccount\Services\AccountService;
@@ -66,25 +67,15 @@ class MiniController extends Controller
 
         throw_unless($oauthUser, AccountException::class, AccountError::ERR_BIND_CODE_ERROR);
 
-        try {
-            $data = $this->service->decodeData(
-                $request->get('encryptedData'),
-                $request->get('iv'),
-                $oauthUser->access_token
-            );
-        } catch (\Exception $exception) {
-            throw new AccountException(AccountError::ERR_MINI_MOBILE_ERROR);
-        }
+        $data = $this->service->getMobileInfo(
+            $request->get('encryptedData'),
+            $request->get('iv'),
+            $oauthUser->access_token
+        );
 
-        // 解密失败
-        throw_if(is_null($data), AccountException::class, AccountError::ERR_WECHAT_MINI_DECRYPT_FAIL);
-
-        $account = $data['purePhoneNumber'];
-
-        // 注册或登陆手机号
-        $userAccount = $service->loginOrRegister($account, null);
+        [$userAccount, $scene] = $service->loginOrRegister($data['purePhoneNumber']);
 
         // 已注册了返回绑定的user_id
-        return callbackEvent([$userAccount, $oauthUser], $service->getScene($account));
+        return callbackEvent([$userAccount, $oauthUser], $scene);
     }
 }

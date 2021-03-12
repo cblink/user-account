@@ -23,7 +23,7 @@ class UserLogin
 {
     public function handle(UserActionEvent $event)
     {
-        $event->account->login(function (UserAccount $account, $userOauth) {
+        $event->account->login(function (UserAccount $account, $userOauth = null) {
             // 与系统用户进行绑定
             // ...
 
