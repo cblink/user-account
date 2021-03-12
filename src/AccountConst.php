@@ -21,6 +21,7 @@ class AccountConst
     const RESET = 'reset';
     const SOCIALITE = 'socialite';
     const RESPONSE = 'response';
+    const BIND = 'bind';
 
     /**
      * 事件
@@ -40,6 +41,7 @@ class AccountConst
         self::REGISTER,
         self::LOGIN,
         self::RESET,
+        self::BIND,
     ];
 
     /**
