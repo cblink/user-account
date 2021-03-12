@@ -74,7 +74,7 @@ class AccountService
     {
         $userAccount = UserAccount::findByMobile($account);
 
-        $scene = $this->getScene($account);
+        $scene = $this->getScene($userAccount);
 
         if ($scene == AccountConst::REGISTER && !$userAccount) {
             $userAccount = UserAccount::query()
