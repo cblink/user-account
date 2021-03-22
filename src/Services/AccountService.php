@@ -129,16 +129,22 @@ class AccountService
      * @param $account
      * @param $captcha
      * @param $captcha_key_id
+     * @return bool
      * @throws \Throwable
      */
-    public function verifyCaptcha($platform, $account, $captcha, $captcha_key_id)
+    public function verifyCaptcha($platform, $account, $captcha, $captcha_key_id): bool
     {
-        // 如果有传入验证码，则进行验证
+        if (config('account.captcha.debug', false)) {
+            return true;
+        }
 
+        // 如果有传入验证码，则进行验证
         throw_if(
             $captcha && !$this->captcha->verify(...func_get_args()),
             AccountException::class,
             AccountError::ERR_CAPTCHA_VERIFY_FAIL
         );
+
+        return true;
     }
 }

@@ -15,6 +15,8 @@ return [
     ],
     // 验证码相关
     'captcha' => [
+        // 开启调试模式，开启了之后所有验证码都会被通过
+        'debug' => env('USER_ACCOUNT_CAPTCHA_DEBUG', false),
         // 验证码位数
         'number' => env('USER_ACCOUNT_CAPTCHA_NUM', 6),
         // 验证码有效期，单位s
