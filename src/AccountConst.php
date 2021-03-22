@@ -22,6 +22,7 @@ class AccountConst
     const SOCIALITE = 'socialite';
     const RESPONSE = 'response';
     const BIND = 'bind';
+    const VALIDATE = 'validate';
 
     /**
      * 事件
@@ -42,6 +43,7 @@ class AccountConst
         self::LOGIN,
         self::RESET,
         self::BIND,
+        self::VALIDATE,
     ];
 
     /**
