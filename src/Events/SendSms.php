@@ -10,12 +10,18 @@
 
 namespace Cblink\UserAccount\Events;
 
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+
 /**
  * Class SendSms
  * @package Cblink\UserAccount\Events
  */
 class SendSms
 {
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
     /**
      * @var string
      */
