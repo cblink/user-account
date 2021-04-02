@@ -10,11 +10,9 @@
 
 namespace Cblink\UserAccount\Services;
 
-use Cblink\UserAccount\AccountConst;
 use Cblink\UserAccount\AccountError;
 use Cblink\UserAccount\AccountException;
 use Cblink\UserAccount\DTO\WechatMiniLoginDTO;
-use Cblink\UserAccount\Models\UserAccount;
 use Cblink\UserAccount\Models\UserOauth;
 use Cblink\UserAccount\Socialite\WechatMiniUser;
 use GuzzleHttp\Client;
@@ -165,8 +163,8 @@ class WechatMiniService
     private function getUserFieldByCode($code)
     {
         return [
-            'appid' => config(sprintf('services.%s.appid', self::WECHAT_MINI)),
-            'secret' => config(sprintf('services.%s.secret', self::WECHAT_MINI)),
+            'appid' => config(sprintf('services.%s.client_id', self::WECHAT_MINI)),
+            'secret' => config(sprintf('services.%s.client_secret', self::WECHAT_MINI)),
             'js_code' => $code,
             'grant_type' => 'authorization_code'
         ];

@@ -61,8 +61,6 @@ trait UserOauthTrait
      */
     public static function registerBySocialite($platform, $userId, AbstractUser $user)
     {
-
-
         return UserOauth::query()->create([
             'app_id' => config(sprintf('services.%s.client_id', $platform)) ?? '',
             'platform' => $platform,
